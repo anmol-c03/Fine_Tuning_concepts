@@ -14,6 +14,8 @@ where  ∆W= BA
 A is  a random Gaussian initialization 
 B is initially initialied to zero
 '''
+
+#in this implementation i have ignored the aplha value for simplicity
 import torch
 import torch.nn as nn
 
@@ -66,3 +68,4 @@ for name,module in model.named_modules():
         module.A.requires_grad=True
         module.B.requires_grad=True
 
+# after this we just have to follow FiT_lamma2 
