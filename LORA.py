@@ -22,18 +22,18 @@ import torch.nn as nn
 
 from transformers import AutoModelForCausalLM,AutoTokenizer,TrainingArguments,trainer,BitsAndBytesConfig
 
-#just ignore this section
+# #just ignore this section
 bnb_4bit_compute_dtype='float16'
 compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
 
-#just ignore this section
+# #just ignore this section
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type='nf4',
     bnb_4bit_compute_dtype=compute_dtype,
     bnb_4bit_use_double_quant=False,
 )
-#upto here 
+# #upto here 
 
 model_name="NousResearch/llama-2-7b-chat-hf"
 
@@ -43,6 +43,14 @@ model=AutoModelForCausalLM.from_pretrained(model_name,
 tokenizer=AutoTokenizer.from_pretrained(model_name,trust_remote_code=True)
 tokenizer.pad_token=tokenizer.eos_token
 tokenizer.padding_side='right'
+# model=nn.ModuleDict(dict(
+#                     ln1=nn.Linear(12,32),
+#                     re=nn.ReLU(),
+#                     ln2=nn.Linear(32,16)))
+
+# sd=model.state_dict()
+# for k,v in sd.items():
+#     print(k,v.shape)
 
 class custom_LORA(nn.Module):
     def __init__(self,original_layer,rank=4):
@@ -57,6 +65,7 @@ class custom_LORA(nn.Module):
     
 # here we are replacing just for example the linear layer with lora 
 for name,module in model.named_modules():
+    print(module)
     if isinstance(module,nn.Linear):
         setattr(model,name,custom_LORA(module))
     
@@ -67,5 +76,8 @@ for name,module in model.named_modules():
     if isinstance(module,custom_LORA):
         module.A.requires_grad=True
         module.B.requires_grad=True
+# sd=model.state_dict()
+# for k,v in sd.items():
+#     print(k,v.shape)
 
 # after this we just have to follow FiT_lamma2 
