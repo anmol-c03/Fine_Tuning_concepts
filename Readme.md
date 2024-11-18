@@ -3,8 +3,8 @@
 # Table of Contents
 1. [Project Overview](#project-overview)
 2. [Usage](#Usage)
-4. [TODO] (#TODO)
-3. [References](#references)
+3. [TODO] (#TODO)
+4. [References](#references)
 
 ## Project Overview
 
@@ -20,6 +20,7 @@ One can use this repo to have a clear understanding of instruction tuning and qu
 
 ## References
 LORA  https://arxiv.org/pdf/2106.09685
+
 Bitnet1.58 https://arxiv.org/pdf/2402.17764
 
 
